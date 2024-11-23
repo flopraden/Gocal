@@ -806,6 +806,7 @@ func fetchHolidayEvents(url string, country string, subDiv string, lang string, 
 		holidayDay := 0
 		holidayMon := 0
 		holidayText := ""
+		fmt.Printf("Treat event id %s\n", p.ID)
 		if (! onlyNationWide) || p.Nationwide { // ignore non-nationwide if asked
 			// TODO: Filter for language
 			holidayText = p.Names[0].Text

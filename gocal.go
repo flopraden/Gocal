@@ -56,7 +56,9 @@ const (
 	FOOTERFONTSIZE   = 12.0
 
 	// Default holiday url
-	HOLIDAY_URL = "https://openholidaysapi.org/PublicHolidays?countryIsoCode=%s&languageIsoCode=%s&validFrom=%s-01-01&validTo=%s-12-31"
+	HOLIDAY_URL = "https://openholidaysapi.org/PublicHolidays?countryIsoCode=%s&subdivisionCode=%s&languageIsoCode=%s&validFrom=%s-01-01&validTo=%s-12-31"
+	// Default School holiday url
+	SCHOOLHOLIDAY_URL = "https://openholidaysapi.org/SchoolHolidays?countryIsoCode=%s&subdivisionCode=%s&languageIsoCode=%s&validFrom=%s-01-01&validTo=%s-12-31"
 )
 
 var testedLanguage = map[string]bool{
@@ -758,10 +760,10 @@ func getPhotoslist(in string) (out [12]string) {
 	return out
 }
 
-func fetchHolidayEvents(year int) (eL []gDate) {
+func fetchHolidayEvents(url string, country string, subDiv string, onlyNationWide bool, year int) (eL []gDate) {
 
 	yearString := strconv.Itoa(year)
-	fullurl := fmt.Sprintf(HOLIDAY_URL, "DE", "DE", yearString, yearString)
+	fullurl := fmt.Sprintf(url, country, subDiv, yearString, yearString)
 
 	fmt.Printf("%v\n", fullurl)
 
@@ -804,7 +806,7 @@ func fetchHolidayEvents(year int) (eL []gDate) {
 		holidayDay := 0
 		holidayMon := 0
 		holidayText := ""
-		if p.Nationwide { // ignore non-nationwide
+		if (! onlyNationWide) || p.Nationwide { // ignore non-nationwide if asked
 			// TODO: Filter for language
 			holidayText = p.Names[0].Text
 			parts := strings.Split(p.StartDate, "-")
@@ -865,9 +867,16 @@ func (g *Calendar) CreateCalendar(fn string) {
 		}
 	}
 
+	//public Holiday not only nation wide
 	if g.OptHoliday {
 		var holidayEventList = make([]gDate, 10000) // Maximum number of events
-		holidayEventList = fetchHolidayEvents(g.WantYear)
+		holidayEventList = fetchHolidayEvents(HOLIDAY_URL, "FR", "FR", false, g.WantYear)
+		fileEventList = append(fileEventList, holidayEventList...)
+	}
+	//school Holiday not only nation wide
+	if g.OptHoliday {
+		var holidayEventList = make([]gDate, 10000) // Maximum number of events
+		holidayEventList = fetchHolidayEvents(SCHOOLHOLIDAY_URL, "FR", "FR", false, g.WantYear)
 		fileEventList = append(fileEventList, holidayEventList...)
 	}
 

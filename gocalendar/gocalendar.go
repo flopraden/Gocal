@@ -57,6 +57,7 @@ var optYearB = flag.Bool("yearB", false, "Year calendar (design B)")
 var optFillpattern = flag.String("fill", "", "Set grid fill pattern.")
 var optVersion = flag.Bool("v", false, "Version.")
 var optMargin = flag.String("margin", "", "Margin comment")
+var optHoliday = flag.Bool("holiday", false, "Download public holidays.")
 
 func main() {
 	flag.Var(&configFiles, "config", "Configuration XML files.")
@@ -95,6 +96,7 @@ func main() {
 	g.SetOrientation(*optOrientation)
 	g.SetPaperformat(*optPaper)
 	g.SetLocale(*optLocale)
+	g.SetHoliday(*optHoliday)
 	g.SetYearSpread(*optYearSpread)
 	if *optYearSpread != 1 && (!*optYearA && !*optYearB) {
 		fmt.Printf("WARN: Option 'spread' ignored. Only valid for year-mode.\n")

@@ -112,7 +112,7 @@ type people []struct {
 	Names    []struct {
 		Language string `json:"language"`
 		Text     string `json:"text"`
-	} `json:"names"`
+	} `json:"name"`
 	Nationwide   bool          `json:"nationwide"`
 	OUnits       []interface{} `json:"oUnits"`
 	StartDate    string        `json:"startDate"`

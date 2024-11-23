@@ -760,10 +760,10 @@ func getPhotoslist(in string) (out [12]string) {
 	return out
 }
 
-func fetchHolidayEvents(url string, country string, subDiv string, onlyNationWide bool, year int) (eL []gDate) {
+func fetchHolidayEvents(url string, country string, subDiv string, lang string, onlyNationWide bool, year int) (eL []gDate) {
 
 	yearString := strconv.Itoa(year)
-	fullurl := fmt.Sprintf(url, country, subDiv, yearString, yearString)
+	fullurl := fmt.Sprintf(url, country, subDiv, lang, yearString, yearString)
 
 	fmt.Printf("%v\n", fullurl)
 
@@ -870,13 +870,13 @@ func (g *Calendar) CreateCalendar(fn string) {
 	//public Holiday not only nation wide
 	if g.OptHoliday {
 		var holidayEventList = make([]gDate, 10000) // Maximum number of events
-		holidayEventList = fetchHolidayEvents(HOLIDAY_URL, "FR", "FR", false, g.WantYear)
+		holidayEventList = fetchHolidayEvents(HOLIDAY_URL, "FR", "FR", "FR", false, g.WantYear)
 		fileEventList = append(fileEventList, holidayEventList...)
 	}
 	//school Holiday not only nation wide
 	if g.OptHoliday {
 		var holidayEventList = make([]gDate, 10000) // Maximum number of events
-		holidayEventList = fetchHolidayEvents(SCHOOLHOLIDAY_URL, "FR", "FR", false, g.WantYear)
+		holidayEventList = fetchHolidayEvents(SCHOOLHOLIDAY_URL, "FR", "FR", "FR", false, g.WantYear)
 		fileEventList = append(fileEventList, holidayEventList...)
 	}
 
